@@ -32,7 +32,7 @@ def parzen_window(X_train, y_train, X_test, h):
     return np.array(predictions)
 
 # Функция для разбиения и тестирования
-def run_experiment(X, y, n_splits=10, test_size=1/3, h=1.0):
+def run_experiment(X, y, n_splits=10, test_size=1/3, h=5000.0):
     results = []
     for i in range(n_splits):
         # Разбиение на обучающую и тестовую выборки

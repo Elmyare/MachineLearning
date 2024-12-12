@@ -21,14 +21,14 @@ X = data.drop('goal', axis=1)  # Признаки
 y = data['goal']  # Целевая переменная
 
 # Функция для выполнения эксперимента
-def run_experiment(X, y, n_splits=10):
+def run_experiment(X, y, n_splits=10, max_depth=None):
     results = []
     for i in range(n_splits):
         # Разбиение на обучающую и тестовую выборки (70:30)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=i)
         
-        # Построение решающего дерева
-        clf = DecisionTreeClassifier(random_state=42)
+        # Построение решающего дерева с заданной глубиной
+        clf = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
         clf.fit(X_train, y_train)
         
         # Прогнозирование на тестовой выборке
@@ -41,13 +41,17 @@ def run_experiment(X, y, n_splits=10):
     
     return results
 
-# Выполнение эксперимента
-results = run_experiment(X, y)
+# Выполнение эксперимента с разными глубинами дерева
+depths = [None, 3, 5, 10]  # Разные значения глубины
+for depth in depths:
+    print(f"\nГлубина дерева: {depth}")
+    results = run_experiment(X, y, max_depth=depth)
+    print(f"Средняя точность при глубине {depth}: {np.mean(results):.4f}")
 
-# Вывод результатов
-print("\nРезультаты тестирования:")
-for i, acc in enumerate(results):
-    print(f"Разбиение {i+1}: Точность = {acc:.4f}")
+# # Вывод результатов
+# print("\nРезультаты тестирования:")
+# for i, acc in enumerate(results):
+#     print(f"Разбиение {i+1}: Точность = {acc:.4f}")
 
-# Средняя точность
-print(f"Средняя точность: {np.mean(results):.4f}")
+# # Средняя точность
+# print(f"Средняя точность: {np.mean(results):.4f}")
